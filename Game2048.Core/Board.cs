@@ -17,6 +17,7 @@ namespace Game2048.Core
 
         public int Score { get; private set; }
         public int Size { get; private set; }
+        public int Steps { get; set; }
 
         #endregion
 
@@ -100,44 +101,45 @@ namespace Game2048.Core
 
         private void Move(Func<Tile, int> predicate, bool up)
         {
+            Steps++;
             for (int c = 0; c < Size; c++)
             {
-                var col1 = new List<Tile>(_tiles.Where(x => predicate(x) == c));
+                var col = new List<Tile>(_tiles.Where(x => predicate(x) == c));
 
                 for (int i = 0; i < Size - 1; i++)
                     if (up)
-                        MoveP(col1);
+                        MoveP(col);
                     else
-                        MoveN(col1);
+                        MoveN(col);
             }
 
             FillNext();
         }
 
-        private void MoveN(List<Tile> col1)
+        private void MoveN(List<Tile> col)
         {
-            for (sbyte y1 = (sbyte)(Size - 1); y1 > 0; y1--)
+            for (var y = Size - 1; y > 0; y--)
             {
-                if (col1[y1].Value == col1[y1 - 1].Value || col1[y1].Value == 0)
+                if (col[y].Value == col[y - 1].Value || col[y].Value == 0)
                 {
-                    if (col1[y1].Value == col1[y1 - 1].Value)
-                        Score += col1[y1].Value;
-                    col1[y1].Value = col1[y1].Value + col1[y1 - 1].Value;
-                    col1[y1 - 1].Value = 0;
+                    if (col[y].Value == col[y - 1].Value)
+                        Score += col[y].Value;
+                    col[y].Value += col[y - 1].Value;
+                    col[y - 1].Value = 0;
                 }
             }
         }
 
-        private void MoveP(List<Tile> col1)
+        private void MoveP(List<Tile> col)
         {
-            for (sbyte y1 = 0; y1 < Size - 1; y1++)
+            for (sbyte y = 0; y < Size - 1; y++)
             {
-                if (col1[y1].Value == col1[y1 + 1].Value || col1[y1].Value == 0)
+                if (col[y].Value == col[y + 1].Value || col[y].Value == 0)
                 {
-                    if (col1[y1].Value == col1[y1 + 1].Value)
-                        Score += col1[y1].Value;
-                    col1[y1].Value = col1[y1].Value + col1[y1 + 1].Value;
-                    col1[y1 + 1].Value = 0;
+                    if (col[y].Value == col[y + 1].Value)
+                        Score += col[y].Value;
+                    col[y].Value += col[y + 1].Value;
+                    col[y + 1].Value = 0;
                 }
             }
         }

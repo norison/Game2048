@@ -2,11 +2,13 @@
 {
     public interface IBoard
     {
+        int Score { get; }
         int Size { get; }
+        int Steps { get; set; }
         ITile[,] Get2DBoard();
-        void MoveUp();
-        void MoveRight();
         void MoveDown();
         void MoveLeft();
+        void MoveRight();
+        void MoveUp();
     }
 }
