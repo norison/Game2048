@@ -31,6 +31,8 @@ namespace Game2048.ConsoleUI
 
             var board2D = board.Get2DBoard();
 
+            Console.WriteLine($"Used {board.Steps} steps, score {board.Score}" + Environment.NewLine);
+
             for (int y = 0; y < board2D.GetLength(0); y++)
             {
                 for (int x = 0; x < board2D.GetLength(1); x++)
