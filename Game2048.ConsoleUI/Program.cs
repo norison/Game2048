@@ -7,13 +7,43 @@ namespace Game2048.ConsoleUI
     {
         static void Main(string[] args)
         {
-            ITileColorizer tileColorizer = new TileColorizer();
             IGameRandomGenerator randomGenerator = new GameRandomGenerator();
             IBoard board = new Board(randomGenerator, 4);
-            IGamePrinter printer = new GamePrinter(tileColorizer, ConsoleColor.White, ConsoleColor.Black);
-            IGameEngine gameEngine = new GameEngine(board, printer);
+            IGameEngine gameEngine = new ConsoleGameEngine();
+            IGame game = new Game(gameEngine, board);
 
-            gameEngine.Play();
+            game.DisplayRequired += PrintBoard;
+
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+
+            game.Play();
+
+            game.DisplayRequired -= PrintBoard;
+
+            Console.WriteLine("Game over");
+            Console.ReadKey();
+        }
+
+        static void PrintBoard(IBoard board)
+        {
+            Console.Clear();
+
+            var board2D = board.Get2DBoard();
+
+            for (int y = 0; y < board2D.GetLength(0); y++)
+            {
+                for (int x = 0; x < board2D.GetLength(1); x++)
+                {
+                    var value = board2D[y, x].Value;
+                    Console.ForegroundColor = TileColorizer.GetColorByValue(value);
+                    Console.Write("{0, 4}", value);
+                }
+
+                Console.Write(Environment.NewLine + Environment.NewLine);
+            }
+
+            Console.ForegroundColor = ConsoleColor.Black;
         }
     }
 }

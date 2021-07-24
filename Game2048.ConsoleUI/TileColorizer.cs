@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Game2048.ConsoleUI
 {
-    public class TileColorizer : ITileColorizer
+    public static class TileColorizer
     {
-        private readonly Dictionary<int, ConsoleColor> _colors = new()
+        private static readonly Dictionary<int, ConsoleColor> _colors = new()
         {
             { 2, ConsoleColor.Black },
             { 4, ConsoleColor.Gray },
@@ -23,7 +23,7 @@ namespace Game2048.ConsoleUI
             { 16384, ConsoleColor.DarkYellow }
         };
 
-        public ConsoleColor GetColorByValue(int value)
+        public static ConsoleColor GetColorByValue(int value)
         {
             return _colors.TryGetValue(value, out var color) ? color : ConsoleColor.Black;
         }
