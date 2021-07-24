@@ -5,4 +5,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Game2048.Core\Game2048.Core.csproj" />
+  </ItemGroup>
+
 </Project>
