@@ -43,6 +43,11 @@ namespace Game2048.Core
                         running = false;
                         break;
                 }
+
+                if (!_board.NextStepAvailable())
+                {
+                    running = false;
+                }
             }
         }
     }

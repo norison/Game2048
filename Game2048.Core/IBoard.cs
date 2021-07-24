@@ -10,5 +10,6 @@
         void MoveLeft();
         void MoveRight();
         void MoveUp();
+        bool NextStepAvailable();
     }
 }

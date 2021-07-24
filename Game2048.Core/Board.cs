@@ -69,9 +69,31 @@ namespace Game2048.Core
             Move(x => x.X, true);
         }
 
+        public bool NextStepAvailable()
+        {
+            return GetEmptyTiles().Any() || HasEqualInVector(x => x.Y) || HasEqualInVector(x => x.X);
+        }
+
         #endregion
 
         #region Private Methods
+
+        private List<Tile> GetEmptyTiles()
+        {
+            return _tiles.Where(x => x.Value == 0).ToList();
+        }
+
+        private bool HasEqualInVector(Func<Tile, int> predicate)
+        {
+            for (int c = 0; c < Size; c++)
+            {
+                var col1 = new List<Tile>(_tiles.Where(x => predicate(x) == c));
+                for (int i = 0; i < Size - 1; i++)
+                    if (col1[i].Value == col1[i + 1].Value)
+                        return true;
+            }
+            return false;
+        }
 
         private void FillBoardDefaultValues()
         {
@@ -84,19 +106,18 @@ namespace Game2048.Core
             }
         }
 
-        private bool FillNext()
+        private void FillNext()
         {
-            var emptyTiles = _tiles.Where(x => x.Value == 0).ToList();
+            var emptyTiles = GetEmptyTiles();
 
             if (emptyTiles.Count == 0)
             {
-                return false;
+                return;
             }
 
             var position = _randomGenerator.GetRandomPosition(emptyTiles.Count - 1);
             var value = _randomGenerator.GetRandomValue();
             emptyTiles[position].Value = value;
-            return true;
         }
 
         private void Move(Func<Tile, int> predicate, bool up)
