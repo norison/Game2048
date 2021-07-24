@@ -9,6 +9,35 @@ namespace Game2048.ConsoleUI
         {
             IGameRandomGenerator randomGenerator = new GameRandomGenerator();
             IBoard board = new Board(randomGenerator, 4);
+
+            while (true)
+            {
+                PrintBoard(board);
+
+                var key = Console.ReadKey(true);
+
+                switch (key.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        board.MoveUp();
+                        break;
+                    case ConsoleKey.RightArrow:
+                        board.MoveRight();
+                        break;
+                    case ConsoleKey.DownArrow:
+                        board.MoveDown();
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        board.MoveLeft();
+                        break;
+                }
+            }
+        }
+
+        static void PrintBoard(IBoard board)
+        {
+            Console.Clear();
+
             ITile[,] board2D = board.Get2DBoard();
 
             for (int y = 0; y < board2D.GetLength(0); y++)
@@ -21,8 +50,6 @@ namespace Game2048.ConsoleUI
                 Console.WriteLine();
                 Console.WriteLine();
             }
-
-            Console.ReadKey();
         }
     }
 }

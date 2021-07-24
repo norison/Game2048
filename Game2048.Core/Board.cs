@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Game2048.Core
@@ -8,8 +9,14 @@ namespace Game2048.Core
         #region Private Fields
 
         private readonly IGameRandomGenerator _randomGenerator;
-        private readonly int _size;
-        private readonly List<ITile> _tiles;
+        private readonly List<Tile> _tiles;
+
+        #endregion
+
+        #region Properties
+
+        public int Score { get; private set; }
+        public int Size { get; private set; }
 
         #endregion
 
@@ -18,8 +25,8 @@ namespace Game2048.Core
         public Board(IGameRandomGenerator randomGenerator, int size)
         {
             _randomGenerator = randomGenerator;
-            _size = size;
-            _tiles = new List<ITile>(_size * _size);
+            Size = size;
+            _tiles = new List<Tile>(Size * Size);
 
             FillBoardDefaultValues();
             FillNext();
@@ -31,14 +38,34 @@ namespace Game2048.Core
 
         public ITile[,] Get2DBoard()
         {
-            ITile[,] result = new ITile[_size, _size];
+            var result = new ITile[Size, Size];
 
             foreach (var tile in _tiles)
             {
-                result[tile.Y, tile.X] = tile;
+                result[tile.Y, tile.X] = new Tile { Y = tile.Y, X = tile.X, Value = tile.Value };
             }
 
             return result;
+        }
+
+        public void MoveDown()
+        {
+            Move(x => x.X, false);
+        }
+
+        public void MoveLeft()
+        {
+            Move(x => x.Y, true);
+        }
+
+        public void MoveRight()
+        {
+            Move(x => x.Y, false);
+        }
+
+        public void MoveUp()
+        {
+            Move(x => x.X, true);
         }
 
         #endregion
@@ -47,9 +74,9 @@ namespace Game2048.Core
 
         private void FillBoardDefaultValues()
         {
-            for (int y = 0; y < _size; y++)
+            for (int y = 0; y < Size; y++)
             {
-                for (int x = 0; x < _size; x++)
+                for (int x = 0; x < Size; x++)
                 {
                     _tiles.Add(new Tile { Y = y, X = x });
                 }
@@ -69,6 +96,50 @@ namespace Game2048.Core
             var value = _randomGenerator.GetRandomValue();
             emptyTiles[position].Value = value;
             return true;
+        }
+
+        private void Move(Func<Tile, int> predicate, bool up)
+        {
+            for (int c = 0; c < Size; c++)
+            {
+                var col1 = new List<Tile>(_tiles.Where(x => predicate(x) == c));
+
+                for (int i = 0; i < Size - 1; i++)
+                    if (up)
+                        MoveP(col1);
+                    else
+                        MoveN(col1);
+            }
+
+            FillNext();
+        }
+
+        private void MoveN(List<Tile> col1)
+        {
+            for (sbyte y1 = (sbyte)(Size - 1); y1 > 0; y1--)
+            {
+                if (col1[y1].Value == col1[y1 - 1].Value || col1[y1].Value == 0)
+                {
+                    if (col1[y1].Value == col1[y1 - 1].Value)
+                        Score += col1[y1].Value;
+                    col1[y1].Value = col1[y1].Value + col1[y1 - 1].Value;
+                    col1[y1 - 1].Value = 0;
+                }
+            }
+        }
+
+        private void MoveP(List<Tile> col1)
+        {
+            for (sbyte y1 = 0; y1 < Size - 1; y1++)
+            {
+                if (col1[y1].Value == col1[y1 + 1].Value || col1[y1].Value == 0)
+                {
+                    if (col1[y1].Value == col1[y1 + 1].Value)
+                        Score += col1[y1].Value;
+                    col1[y1].Value = col1[y1].Value + col1[y1 + 1].Value;
+                    col1[y1 + 1].Value = 0;
+                }
+            }
         }
 
         #endregion
