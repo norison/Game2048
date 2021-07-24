@@ -7,9 +7,9 @@ namespace Game2048.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var board = new Board(4);
-
-           var board2D = board.Get2DBoard();
+            IGameRandomGenerator randomGenerator = new GameRandomGenerator();
+            IBoard board = new Board(randomGenerator, 4);
+            ITile[,] board2D = board.Get2DBoard();
 
             for (int y = 0; y < board2D.GetLength(0); y++)
             {

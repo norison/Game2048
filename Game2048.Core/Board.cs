@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Game2048.Core
 {
@@ -6,6 +7,7 @@ namespace Game2048.Core
     {
         #region Private Fields
 
+        private readonly IGameRandomGenerator _randomGenerator;
         private readonly int _size;
         private readonly List<ITile> _tiles;
 
@@ -13,12 +15,14 @@ namespace Game2048.Core
 
         #region Constructor
 
-        public Board(int size)
+        public Board(IGameRandomGenerator randomGenerator, int size)
         {
+            _randomGenerator = randomGenerator;
             _size = size;
             _tiles = new List<ITile>(_size * _size);
 
             FillBoardDefaultValues();
+            FillNext();
         }
 
         #endregion
@@ -50,6 +54,21 @@ namespace Game2048.Core
                     _tiles.Add(new Tile { Y = y, X = x });
                 }
             }
+        }
+
+        private bool FillNext()
+        {
+            var emptyTiles = _tiles.Where(x => x.Value == 0).ToList();
+
+            if (emptyTiles.Count == 0)
+            {
+                return false;
+            }
+
+            var position = _randomGenerator.GetRandomPosition(emptyTiles.Count - 1);
+            var value = _randomGenerator.GetRandomValue();
+            emptyTiles[position].Value = value;
+            return true;
         }
 
         #endregion
