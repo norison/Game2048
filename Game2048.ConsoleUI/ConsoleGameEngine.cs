@@ -18,6 +18,8 @@ namespace Game2048.ConsoleUI
                     return NextStepCommand.Left;
                 case ConsoleKey.RightArrow:
                     return NextStepCommand.Right;
+                case ConsoleKey.R:
+                    return NextStepCommand.Restart;
                 case ConsoleKey.Q:
                     return NextStepCommand.Quit;
             }

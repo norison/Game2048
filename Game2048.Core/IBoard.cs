@@ -11,5 +11,6 @@
         void MoveRight();
         void MoveUp();
         bool NextStepAvailable();
+        void Restart();
     }
 }

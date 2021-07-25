@@ -46,6 +46,8 @@ namespace Game2048.ConsoleUI
             }
 
             Console.ForegroundColor = ConsoleColor.Black;
+
+            Console.WriteLine("Press q to exit, r to restart, use arrows to play.");
         }
     }
 }

@@ -39,6 +39,9 @@ namespace Game2048.Core
                     case NextStepCommand.Left:
                         _board.MoveLeft();
                         break;
+                    case NextStepCommand.Restart:
+                        _board.Restart();
+                        break;
                     case NextStepCommand.Quit:
                         running = false;
                         break;

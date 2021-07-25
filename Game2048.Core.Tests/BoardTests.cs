@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 
 namespace Game2048.Core.Tests

@@ -7,6 +7,7 @@
         Right,
         Left,
         Quit,
+        Restart,
         Default
     }
 }

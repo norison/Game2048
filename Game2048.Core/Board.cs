@@ -74,6 +74,15 @@ namespace Game2048.Core
             return GetEmptyTiles().Any() || HasEqualInVector(x => x.Y) || HasEqualInVector(x => x.X);
         }
 
+        public void Restart()
+        {
+            Score = 0;
+            Steps = 0;
+
+            FillBoardDefaultValues();
+            FillNext();
+        }
+
         #endregion
 
         #region Private Methods
@@ -97,6 +106,8 @@ namespace Game2048.Core
 
         private void FillBoardDefaultValues()
         {
+            _tiles.Clear();
+
             for (int y = 0; y < Size; y++)
             {
                 for (int x = 0; x < Size; x++)
