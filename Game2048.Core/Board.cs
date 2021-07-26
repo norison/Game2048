@@ -16,8 +16,8 @@ namespace Game2048.Core
         #region Properties
 
         public int Score { get; private set; }
-        public int Size { get; private set; }
-        public int Steps { get; set; }
+        public int Size { get; }
+        public int Steps { get; private set; }
 
         #endregion
 

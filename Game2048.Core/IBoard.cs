@@ -4,7 +4,7 @@
     {
         int Score { get; }
         int Size { get; }
-        int Steps { get; set; }
+        int Steps { get; }
         ITile[,] Get2DBoard();
         void MoveDown();
         void MoveLeft();
